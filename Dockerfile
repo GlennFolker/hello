@@ -7,10 +7,8 @@ RUN apt-get install -y \
 
 RUN apt-get update
 
-RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
-ENV PATH="/root/.cargo/bin:${PATH}"
+RUN curl https://sh.rustup.rs -sSf | bash -s -- --default-toolchain nightly --profile minimal -y
+RUN source ~/.bashrc
 
-RUN rustup toolchain install nightly
-RUN rustup default nightly
-
+RUN ls
 RUN cargo build --release --target aarch64-unknown-linux-gnu
