@@ -10,7 +10,7 @@ RUN apt-get update
 RUN curl https://sh.rustup.rs -sSf | bash -s -- --default-toolchain nightly --profile minimal -y
 ENV PATH="/root/.cargo/bin:${PATH}"
 
-RUN ls /
-RUN ls ~
-RUN ls ~/hello
+RUN echo $HOME
+RUN ls $HOME
+
 RUN cargo build --release --target aarch64-unknown-linux-gnu
