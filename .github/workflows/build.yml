@@ -19,6 +19,6 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           file: ./Dockerfile
-          platforms: linux/arm64
+          platforms: linux/amd64
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/hello:latest
