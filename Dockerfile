@@ -8,7 +8,7 @@ RUN apt-get install -y \
 RUN apt-get update
 
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
-ENV PATH="/root/.cargi/bin:${PATH}"
+ENV PATH="/root/.cargo/bin:${PATH}"
 
 RUN rustup toolchain install nightly \
     rustup default nightly
