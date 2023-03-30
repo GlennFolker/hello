@@ -22,7 +22,6 @@ jobs:
         with:
           file: ./Dockerfile
           platforms: linux/amd64
-          push: true
           tags: hello:${{ github.run_number }}
           outputs: type=docker,dest=./build-image.tar
       - name: Copy binaries from container to host
