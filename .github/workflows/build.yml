@@ -30,7 +30,7 @@ jobs:
           docker load --input ./build-image.tar
 
           id=$(docker ps -q | xargs)
-          docker exec $id ls -R /
+          docker exec $id ls -R / | grep "hello"
           #docker cp $id:/hello/target/x86_64-unknown-linux-gnu/hello hello-x86_64-linux
       - name: Upload x86_64-unknown-linux-gnu artifact
         uses: actions/upload-artifact@v3
