@@ -22,18 +22,23 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/hello:latest
+      - name: Copy files from Docker image to main filesystem
+        run: |
+          docker run --rm --entrypoint=cat --platform=linux/amd64 ubuntu:16.04 /hello/target/x86_64-unknown-linux-gnu/release/hello > hello-x86_64-linux
+          docker run --rm --entrypoint=cat --platform=linux/amd64 ubuntu:16.04 /hello/target/aarch64-unknown-linux-gnu/release/hello > hello-aarch64-linux
+          docker run --rm --entrypoint=cat --platform=linux/amd64 ubuntu:16.04 /hello/target/x86_64-pc-windows-gnu/release/hello > hello-x86_64-windows.exe
       - name: Upload x86_64-unknown-linux-gnu artifact
         uses: actions/upload-artifact@v3
         with:
           name: hello-x86_64-linux
-          path: target/x86_64-unknown-linux-gnu/release/hello
+          path: hello-x86_64-linux
       - name: Upload aarch64-unknown-linux-gnu artifact
         uses: actions/upload-artifact@v3
         with:
           name: hello-aarch64-linux
-          path: target/aarch64-unknown-linux-gnu/release/hello
+          path: hello-aarch64-linux
       - name: Upload x86_64-pc-windows-gnu artifact
         uses: actions/upload-artifact@v3
         with:
-          name: hello-x86_64-windows
-          path: target/x86_64-pc-windows-gnu/release/hello.exe
+          name: hello-x86_64-windows.exe
+          path: hello-x86_64-windows.exe
