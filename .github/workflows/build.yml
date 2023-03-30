@@ -27,7 +27,8 @@ jobs:
       - name: Copy binaries from container to host
         run: |
           docker load --input ./build-image.tar
-          docker cp hello:${{ github.run_number }}:/hello/target/x86_64-unknown-linux-gnu/hello hello-x86_64-linux
+          #docker cp hello:${{ github.run_number }}:/hello/target/x86_64-unknown-linux-gnu/hello hello-x86_64-linux
+          docker ps
       - name: Upload x86_64-unknown-linux-gnu artifact
         uses: actions/upload-artifact@v3
         with:
