@@ -22,3 +22,18 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/hello:latest
+      - name: Upload x86_64-unknown-linux-gnu artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: hello-x86_64-linux
+          path: target/x86_64-unknown-linux-gnu/release/hello
+      - name: Upload aarch64-unknown-linux-gnu artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: hello-aarch64-linux
+          path: target/aarch64-unknown-linux-gnu/release/hello
+      - name: Upload x86_64-pc-windows-gnu artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: hello-x86_64-windows
+          path: target/x86_64-pc-windows-gnu/release/hello.exe
