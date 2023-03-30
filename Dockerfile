@@ -15,13 +15,13 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 
 RUN printf "\n\
 [target.x86_64-unknown-linux-gnu]\n\
-linker = "gcc"\n\
+linker = \"gcc\"\n\
 [target.aarch64-unknown-linux-gnu]\n\
-linker = "aarch64-linux-gnu-gcc"\n\
+linker = \"aarch64-linux-gnu-gcc\"\n\
 [target.x86_64-pc-windows-gnu]\n\
-linker = "x86_64-w64-mingw32-gcc"\n\
+linker = \"x86_64-w64-mingw32-gcc\"\n\
 [profile.release]\n\
-lto = on\n\
+lto = \"on\"\n\
 codegen-units = 1\n\
 " > /root/.cargo/config
 
