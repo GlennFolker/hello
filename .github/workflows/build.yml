@@ -31,6 +31,11 @@ jobs:
           push: true
       - name: Copy binaries from container to host
         run: |
+          docker ps
+          docker ps -q
+          docker ps -q --filter ancestor=ubuntu:16.04
+          docker ps -q --filter ancestor=ubuntu:22.04
+
           linux_id=$(docker ps -q --filter ancestor=ubuntu:16.04 | xargs)
           windows_id=$(docker ps -q --filter ancestor=ubuntu:22.04 | xargs)
 
