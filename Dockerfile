@@ -5,7 +5,7 @@ COPY . .
 
 RUN apt-get update
 RUN apt-get install -y \
-    gcc \
+    gcc-multilib \
     #gcc-x86-64-linux-gnu \
     #gcc-i686-linux-gnu \
     gcc-aarch64-linux-gnu \
