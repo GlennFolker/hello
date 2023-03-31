@@ -24,11 +24,11 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64
           tags: hello:${{ github.run_number }}
-          push: true
-          #outputs: type=docker,dest=./build-image.tar
+          #push: true
+          outputs: type=docker,dest=./build-image.tar
       - name: Copy binaries from container to host
         run: |
-          #docker load --input ./build-image.tar
+          docker load --input ./build-image.tar
 
           id=$(docker ps -q | xargs)
 
