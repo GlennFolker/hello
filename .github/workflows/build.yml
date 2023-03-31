@@ -36,6 +36,7 @@ jobs:
           docker ps -q --filter ancestor=ubuntu:16.04
           docker ps -q --filter ancestor=ubuntu:22.04
 
+          id=$(docker ps -q | xargs)
           linux_id=$(docker ps -q --filter ancestor=ubuntu:16.04 | xargs)
           windows_id=$(docker ps -q --filter ancestor=ubuntu:22.04 | xargs)
 
@@ -50,12 +51,12 @@ jobs:
                   "$4"
           }
 
-          copy_over $linux_id "x86_64-unknown-linux-gnu" "hello" "hello-x86_64-linux"
-          copy_over $linux_id "i686-unknown-linux-gnu" "hello" "hello-x86-linux"
-          copy_over $linux_id "aarch64-unknown-linux-gnu" "hello" "hello-aarch64-linux"
-          copy_over $linux_id "armv7-unknown-linux-gnueabi" "hello" "hello-arm-linux"
-          copy_over $windows_id "x86_64-pc-windows-gnu" "hello.exe" "hello-x86_64-windows.exe"
-          copy_over $windows_id "i686-pc-windows-gnu" "hello.exe" "hello-x86-windows.exe"
+          copy_over $id "x86_64-unknown-linux-gnu" "hello" "hello-x86_64-linux"
+          copy_over $id "i686-unknown-linux-gnu" "hello" "hello-x86-linux"
+          copy_over $id "aarch64-unknown-linux-gnu" "hello" "hello-aarch64-linux"
+          copy_over $id "armv7-unknown-linux-gnueabi" "hello" "hello-arm-linux"
+          copy_over $id "x86_64-pc-windows-gnu" "hello.exe" "hello-x86_64-windows.exe"
+          copy_over $id "i686-pc-windows-gnu" "hello.exe" "hello-x86-windows.exe"
       - name: Upload x86_64-unknown-linux-gnu artifact
         uses: actions/upload-artifact@v3
         with:
