@@ -33,14 +33,15 @@ jobs:
           id=$(docker ps -q | xargs)
 
           copy_over() {
-              echo $(docker exec $id ls -R / | grep "hello/target/$1/release")
-              #docker cp \
-              #    $id:$(docker exec $id ls -R / | grep "$1/release/$2")
+              local build_path=$(docker exec $id ls -R / | grep "hello/target/$1/release" -m 1)
+              docker cp \
+                  "$id:$build_path/$2" \
+                  "$3"
           }
 
-          copy_over "x86_64-unknown-linux-gnu"
-          copy_over "aarch64-unknown-linux-gnu"
-          copy_over "x86_64-pc-windows-gnu"
+          copy_over "x86_64-unknown-linux-gnu" "hello" "hello-x86_64-linux"
+          copy_over "aarch64-unknown-linux-gnu" "hello" "hello-aarch64-linux"
+          copy_over "x86_64-pc-windows-gnu" "hello" "hello-x86_64-windows.exe"
       - name: Upload x86_64-unknown-linux-gnu artifact
         uses: actions/upload-artifact@v3
         with:
