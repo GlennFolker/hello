@@ -3,9 +3,12 @@ FROM --platform=linux/amd64 ubuntu:16.04
 WORKDIR /hello
 COPY . .
 
-RUN apt search gcc-multilib
-
 RUN apt-get update
+
+RUN apt search gcc-multilib
+RUN apt search gcc i686
+RUN apt search gcc i386
+
 RUN apt-get install -y \
     gcc-multilib \
     gcc-aarch64-linux-gnu \
