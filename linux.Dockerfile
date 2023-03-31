@@ -5,6 +5,10 @@ COPY . .
 
 RUN apt-get update
 RUN apt-get install -y curl
+RUN apt-get autoremove -y \
+    gcc-multilib \
+    gcc-aarch64-linux-gnu \
+    gcc-arm-linux-gnueabi
 
 RUN curl https://sh.rustup.rs -sSf | bash -s -- --default-toolchain nightly --profile minimal -y
 ENV PATH="/root/.cargo/bin:${PATH}"

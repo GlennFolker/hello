@@ -15,6 +15,15 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: |
+            /tmp/.buildx-cache-linux
+            /tmp/.buildx-cache-windows
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
       - name: Build and push for Linux builds
         uses: docker/build-push-action@v4
         with:
@@ -22,6 +31,8 @@ jobs:
           platforms: linux/amd64
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/hello:linux-latest
           push: true
+          cache-from: type=local,src=/tmp/.buildx-cache-linux
+          cache-to: type=local,dest=/tmp/.buildx-cache-linux-new,mode=max
       - name: Build and push for Windows builds
         uses: docker/build-push-action@v4
         with:
@@ -29,34 +40,35 @@ jobs:
           platforms: linux/amd64
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/hello:windows-latest
           push: true
+          cache-from: type=local,src=/tmp/.buildx-cache-windows
+          cache-to: type=local,dest=/tmp/.buildx-cache-windows-new,mode=max
       - name: Copy binaries from container to host
         run: |
-          docker ps
-          docker ps -q
-          docker ps -q --filter ancestor=ubuntu:16.04
-          docker ps -q --filter ancestor=ubuntu:22.04
-
           id=$(docker ps -q | xargs)
-          linux_id=$(docker ps -q --filter ancestor=ubuntu:16.04 | xargs)
-          windows_id=$(docker ps -q --filter ancestor=ubuntu:22.04 | xargs)
-
           copy_over() {
               local build_path=$( \
-                  docker exec $1 ls -R / | \
-                  grep "hello/target/$2/release:" | \
+                  docker exec $id ls -R / | \
+                  grep "hello/target/$1/release:" | \
                   sed -e "s/:.*//" \
               )
               docker cp \
-                  "$1:$build_path/$3" \
-                  "$4"
+                  "$id:$build_path/$2" \
+                  "$3"
           }
 
-          copy_over $id "x86_64-unknown-linux-gnu" "hello" "hello-x86_64-linux"
-          copy_over $id "i686-unknown-linux-gnu" "hello" "hello-x86-linux"
-          copy_over $id "aarch64-unknown-linux-gnu" "hello" "hello-aarch64-linux"
-          copy_over $id "armv7-unknown-linux-gnueabi" "hello" "hello-arm-linux"
-          copy_over $id "x86_64-pc-windows-gnu" "hello.exe" "hello-x86_64-windows.exe"
-          copy_over $id "i686-pc-windows-gnu" "hello.exe" "hello-x86-windows.exe"
+          copy_over "x86_64-unknown-linux-gnu" "hello" "hello-x86_64-linux"
+          copy_over "i686-unknown-linux-gnu" "hello" "hello-x86-linux"
+          copy_over "aarch64-unknown-linux-gnu" "hello" "hello-aarch64-linux"
+          copy_over "armv7-unknown-linux-gnueabi" "hello" "hello-arm-linux"
+          copy_over "x86_64-pc-windows-gnu" "hello.exe" "hello-x86_64-windows.exe"
+          copy_over "i686-pc-windows-gnu" "hello.exe" "hello-x86-windows.exe"
+      - name: Update Docker cache
+        run: |
+          rm -rf /tmp/.buildx-cache-linux
+          mv /tmp/.buildx-cache-linux-new /tmp/.buildx-cache-linux
+
+          rm -rf /tmp/.buildx-cache-windows
+          mv /tmp/.buildx-cache-windows-new /tmp/.buildx-cache-windows
       - name: Upload x86_64-unknown-linux-gnu artifact
         uses: actions/upload-artifact@v3
         with:
