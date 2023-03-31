@@ -3,9 +3,14 @@ FROM --platform=linux/amd64 ubuntu:16.04
 WORKDIR /hello
 COPY . .
 
+RUN apt search gcc i686
+RUN apt search gcc i386
+RUN apt search libgcc i686
+RUN apt search libgcc i386
+
 RUN apt-get update
 RUN apt-get install -y \
-    gcc libc6-dev-i386 \
+    gcc libc6-dev-i386 libc6-dev-i386-cross \
     gcc-aarch64-linux-gnu \
     gcc-arm-linux-gnueabi \
     gcc-mingw-w64-x86-64 \
