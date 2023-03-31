@@ -20,14 +20,14 @@ jobs:
         with:
           file: ./linux.Dockerfile
           platforms: linux/amd64
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/hello/linux:${{ github.run_number }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/hello:linux-latest
           push: true
       - name: Build and push for Windows builds
         uses: docker/build-push-action@v4
         with:
           file: ./windows.Dockerfile
           platforms: linux/amd64
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/hello/windows:${{ github.run_number }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/hello:windows-latest
           push: true
       - name: Copy binaries from container to host
         run: |
