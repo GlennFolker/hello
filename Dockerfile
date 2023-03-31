@@ -26,6 +26,7 @@ linker = \"x86_64-w64-mingw32-gcc\"\n\
 linker = \"i686-w64-mingw32-gcc\"\n\
 [profile.release]\n\
 lto = \"on\"\n\
+panic = \"abort\"\n\
 codegen-units = 1\n\
 " > /root/.cargo/config
 
@@ -42,8 +43,8 @@ RUN apt-get autoremove -y gcc-multilib
 RUN apt-get install -y \
     gcc-aarch64-linux-gnu \
     gcc-arm-linux-gnueabi \
-    gcc-mingw-w64-x86-64-posix \
-    gcc-mingw-w64-i686-posix
+    gcc-mingw-w64-x86-64 \
+    gcc-mingw-w64-i686
 
 RUN rustup target add \
     aarch64-unknown-linux-gnu \
