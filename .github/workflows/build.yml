@@ -46,7 +46,7 @@ jobs:
 
           copy_over "x86_64-unknown-linux-gnu" "hello" "hello-x86_64-linux"
           copy_over "aarch64-unknown-linux-gnu" "hello" "hello-aarch64-linux"
-          copy_over "x86_64-pc-windows-gnu" "hello" "hello-x86_64-windows.exe"
+          copy_over "x86_64-pc-windows-gnu" "hello.exe" "hello-x86_64-windows.exe"
       - name: Upload x86_64-unknown-linux-gnu artifact
         uses: actions/upload-artifact@v3
         with:
