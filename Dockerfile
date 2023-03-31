@@ -4,17 +4,8 @@ WORKDIR /hello
 COPY . .
 
 RUN apt-get update
-
-RUN apt search gcc-multilib
-RUN apt search gcc i686
-RUN apt search gcc i386
-
 RUN apt-get install -y \
     gcc-multilib \
-    #gcc-aarch64-linux-gnu \
-    #gcc-arm-linux-gnueabi \
-    #gcc-mingw-w64-x86-64 \
-    #gcc-mingw-w64-i686 \
     curl
 
 RUN curl https://sh.rustup.rs -sSf | bash -s -- --default-toolchain nightly --profile minimal -y
@@ -48,8 +39,17 @@ RUN rustup target add \
 
 RUN cargo build --release \
     --target x86_64-unknown-linux-gnu \
-    --target i686-unknown-linux-gnu \
-    #--target aarch64-unknown-linux-gnu \
-    #--target armv7-unknown-linux-gnueabi \
-    #--target x86_64-pc-windows-gnu \
-    #--target i686-pc-windows-gnu
+    --target i686-unknown-linux-gnu
+
+RUN apt-get autoremove -y gcc-multilib
+RUN apt-get install -y \
+    gcc-aarch64-linux-gnu \
+    gcc-arm-linux-gnueabi \
+    gcc-mingw-w64-x86-64 \
+    gcc-mingw-w64-i686
+
+RUN cargo build --release \
+    --target aarch64-unknown-linux-gnu \
+    --target armv7-unknown-linux-gnueabi \
+    --target x86_64-pc-windows-gnu \
+    --target i686-pc-windows-gnu
