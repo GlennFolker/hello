@@ -24,20 +24,23 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64
           tags: hello:${{ github.run_number }}
-          outputs: type=docker,dest=./build-image.tar
+          push: true
+          #outputs: type=docker,dest=./build-image.tar
       - name: Copy binaries from container to host
         run: |
-          docker load --input ./build-image.tar
+          #docker load --input ./build-image.tar
 
           id=$(docker ps -q | xargs)
 
           copy_over() {
-              echo $(docker exec $id ls -R / | grep "hello/target/$1/release")
+              echo $(docker exec $id ls -R / | grep "hello/target/$1/release" -m 1)
               #docker cp \
               #    $id:$(docker exec $id ls -R / | grep "$1/release/$2")
           }
 
           copy_over "x86_64-unknown-linux-gnu"
+          copy_over "aarch64-unknown-linux-gnu"
+          copy_over "x86_64-pc-windows-gnu"
       - name: Upload x86_64-unknown-linux-gnu artifact
         uses: actions/upload-artifact@v3
         with:
