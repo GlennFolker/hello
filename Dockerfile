@@ -4,16 +4,8 @@ WORKDIR /hello
 COPY . .
 
 RUN apt-get update
-
-RUN apt search gcc linux gnu
-RUN apt search gcc linux gnu x86-64
-RUN apt search gcc linux gnu i686
-
 RUN apt-get install -y \
-    gcc-multilib-x86-64-linux-gnu \
-    gcc-multilib-i686-linux-gnu \
-    #gcc-x86-64-linux-gnu \
-    #gcc-i686-linux-gnu \
+    gcc libc6-dev-i386 \
     gcc-aarch64-linux-gnu \
     gcc-arm-linux-gnueabi \
     gcc-mingw-w64-x86-64 \
@@ -25,9 +17,9 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 
 RUN printf "\n\
 [target.x86_64-unknown-linux-gnu]\n\
-linker = \"x86_64-linux-gnu-gcc\"\n\
+linker = \"gcc\"\n\
 [target.i686-unknown-linux-gnu]\n\
-linker = \"i686-linux-gnu-gcc\"\n\
+linker = \"gcc\"\n\
 [target.aarch64-unknown-linux-gnu]\n\
 linker = \"aarch64-linux-gnu-gcc\"\n\
 [target.armv7-unknown-linux-gnueabi]\n\
