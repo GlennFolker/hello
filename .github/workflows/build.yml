@@ -33,7 +33,12 @@ jobs:
           id=$(docker ps -q | xargs)
 
           copy_over() {
-              local build_path=$(docker exec $id ls -R / | grep "hello/target/$1/release" -m 1)
+              local build_path=$( \
+                  docker exec $id ls -R / | \
+                  grep "hello/target/$1/release:" | \
+                  sed -e "s/:.*//" \
+              )
+              
               docker cp \
                   "$id:$build_path/$2" \
                   "$3"
